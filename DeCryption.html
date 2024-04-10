@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scaled=1.0">
+        <title>Text Encryption</title>
+        <style>
+            body{
+                background:#036690;
+                position:relative;
+                bottom:50px;
+            }
+            label{
+                font-family:sans-serif;
+                color:black;
+                transform:scale(1.5);
+                position:relative;
+
+            }
+            #container-2{
+                position:relative;
+                left:580px;
+                top:140px;
+                background:white;
+                border-radius:10px;
+                padding:10px 60px;
+                width:400px;
+                height:500px;
+                flex-direction: column;
+                box-shadow:0 0 30px rgba(0,0,0,0.2);
+            }
+            #container-2 button{
+                position:relative;
+                top:100px;
+                right:125px;
+            }
+            textarea{
+                background:transparent;
+                outline:none;
+                border-radius:5px;
+                text-align:center;
+                transform:scale(1.5);
+                margin-bottom:70px;
+                position:relative;
+                top:40px;
+                cursor:pointer;
+
+            }
+            #decrypt-btn{
+                transform:translate(50px,128px) scale(2.4);
+            }
+            #copyToClipBoard{
+                transform:translate(210px,110px) scale(2.4);
+            }
+            #decrypt-btn,#copyToClipBoard{
+                border-radius:5px;
+                border:none;
+                cursor:pointer;
+                background: #306630;
+                color:white;
+                font-family:sans-serif;
+                font-size:10px;
+                padding:4px 12px;
+
+
+            }
+            #shiftInput{
+                transform:scale(1.8);
+                outline:none;
+                cursor:pointer;
+                border: 2px solid grey;
+            }
+            #container-1{
+                background:white;
+                border-radius:10px;
+                padding:30px 60px;
+                width:400px;
+                height:50px;
+                box-shadow:0 0 30px rgba(0,0,0,0.2);
+                transform:translate(580px,100px);
+                font-family:'Fruktur',cursive;
+                cursor:pointer;
+            }
+            #container-1,#container-2{
+                display:flex;
+                justify-content: center;
+                align-items:center;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="container-1">
+            <h1>Cipher Decrypter</h1>
+    </div>
+        <div id="container-2">
+            <label><textarea type='text' id='cipherInput-1' placeholder='Type in Cipher Text'></textarea></label>
+            <button id="decrypt-btn">Decrypt</button>
+            <button id="copyToClipBoard">Copy Text</button>
+            <input type="number" id="shiftInput" min="0" max="25"><br>
+            <label>
+                <textarea type="text" id="decryptedInput-1" placeholder="Decrypted Text"></textarea>
+            </label>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <a href="EnCryption.html" ><h3 style="color:blueviolet">Click here for Cipher Encyrpter.....</h3></a>
+        </div>
+        <script>
+            let cInput=document.getElementById('cipherInput-1')
+            let pInput=document.getElementById('decryptedInput-1')
+            let inputs=[cInput,pInput]
+            
+
+            inputs.forEach(input=>{
+                input.oninput= () =>{
+                    input.value=input.value.toUpperCase()
+                    //makes all chars uppercase no matter  what
+                }
+            })
+
+            let decryptBtn=document.getElementById('decrypt-btn')
+            let copyBtn=document.getElementById('copyToClipBoard')
+            function decrypt(){
+                let c_Input=cInput.value
+                let solved=''
+                let shiftInput=parseInt(document.getElementById('shiftInput').value)
+
+                for(let i=0;i<c_Input.length;i++){
+                    let ascii_num=parseInt(c_Input[i].charCodeAt())
+                    let diff=ascii_num-shiftInput
+                    if(diff>=65 && diff<=90){ solved += String.fromCharCode(diff)} 
+                    else if(ascii_num==32) {solved += ' '}
+                    else if(diff < 65 ){ solved += String.fromCharCode(91-(65-diff)%26) }
+                }
+                pInput.value=solved
+            }
+            function copyText(){
+                pInput.select()
+                pInput.setSelectionRange(0,99999)
+                document.execCommand('copy')
+                alert("Copied to Clipboard: "+pInput.value)
+            }
+           
+            decryptBtn.addEventListener('click',decrypt)
+            copyBtn.addEventListener('click',copyText)
+        </script>
+           
+        
+    </body>
+</html>
